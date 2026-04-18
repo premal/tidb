@@ -1265,6 +1265,14 @@ func BuildTableInfoWithLike(ident ast.Ident, referTblInfo *model.TableInfo, s *a
 		tblInfo.Partition = &pi
 	} else if s.ExcludePartitions {
 		tblInfo.Partition = nil
+		// Global indexes are only valid on partitioned tables; demote them to local.
+		for i, idx := range tblInfo.Indices {
+			if idx.Global {
+				clone := *idx
+				clone.Global = false
+				tblInfo.Indices[i] = &clone
+			}
+		}
 	}
 
 	if referTblInfo.TTLInfo != nil {
