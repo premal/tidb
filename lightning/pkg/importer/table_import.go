@@ -1359,6 +1359,9 @@ func (tr *TableImporter) compareChecksum(remoteChecksum *local.RemoteChecksum, l
 	return nil
 }
 
+// analyzeTable runs ANALYZE TABLE on the target table.
+// When partitionName is non-empty, the statement is scoped to that partition only:
+// ANALYZE TABLE t PARTITION (partitionName).
 func (tr *TableImporter) analyzeTable(ctx context.Context, db *sql.DB, partitionName string) error {
 	task := tr.logger.Begin(zap.InfoLevel, "analyze")
 	exec := common.SQLWithRetry{
