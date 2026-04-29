@@ -1469,7 +1469,11 @@ func (rc *Controller) importTables(ctx context.Context) (finalErr error) {
 			if err != nil {
 				return errors.Trace(err)
 			}
-			tr, err := NewTableImporter(tableName, tableMeta, dbInfo, tableInfo, cp, igCols.ColumnsMap(), igCols.ColumnConstants, kvStore, etcdCli, log.FromContext(ctx))
+			colConstants, err := rc.cfg.Mydumper.ColumnConstants.GetColumnConstants(dbInfo.Name, tableInfo.Name, rc.cfg.Mydumper.CaseSensitive)
+			if err != nil {
+				return errors.Trace(err)
+			}
+			tr, err := NewTableImporter(tableName, tableMeta, dbInfo, tableInfo, cp, igCols.ColumnsMap(), colConstants, kvStore, etcdCli, log.FromContext(ctx))
 			if err != nil {
 				return errors.Trace(err)
 			}
