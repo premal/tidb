@@ -23,7 +23,6 @@ import (
 	"github.com/pingcap/tidb/pkg/executor/internal/exec"
 	"github.com/pingcap/tidb/pkg/kv"
 	"github.com/pingcap/tidb/pkg/meta/model"
-	"github.com/pingcap/tidb/pkg/parser/ast"
 	"github.com/pingcap/tidb/pkg/sessionctx"
 	"github.com/pingcap/tidb/pkg/sessionctx/variable"
 	"github.com/pingcap/tidb/pkg/table"
@@ -209,12 +208,12 @@ type checksumContext struct {
 	startTs        uint64
 	response       *tipb.ChecksumResponse
 	// partitionNames restricts the checksum to the named partitions; all partitions are checksummed when empty.
-	partitionNames []ast.CIStr
+	partitionNames []model.CIStr
 }
 
 // newChecksumContext creates a checksumContext for the given table.
 // When partitionNames is non-empty, only those partitions are checksummed.
-func newChecksumContext(db *model.DBInfo, table *model.TableInfo, startTs uint64, partitionNames []ast.CIStr) *checksumContext {
+func newChecksumContext(db *model.DBInfo, table *model.TableInfo, startTs uint64, partitionNames []model.CIStr) *checksumContext {
 	return &checksumContext{
 		dbInfo:         db,
 		tableInfo:      table,
