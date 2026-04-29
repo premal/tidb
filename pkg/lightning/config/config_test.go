@@ -17,6 +17,7 @@ package config
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"math"
@@ -1557,4 +1558,22 @@ ts = "2026-04-17 22:00:00"
 	err = cfg.Mydumper.adjustIgnoreColumns()
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "duplicate column-constants entry for column ts")
+}
+
+func TestTargetPartitionConfig(t *testing.T) {
+	cfg := NewConfig()
+	require.Equal(t, "", cfg.Mydumper.TargetPartition)
+
+	tomlStr := `
+[mydumper]
+data-source-dir = "."
+target-partition = "p_acme"
+`
+	err := toml.Unmarshal([]byte(tomlStr), cfg)
+	require.NoError(t, err)
+	require.Equal(t, "p_acme", cfg.Mydumper.TargetPartition)
+
+	jsonBytes, err := json.Marshal(cfg.Mydumper)
+	require.NoError(t, err)
+	require.Contains(t, string(jsonBytes), `"target-partition":"p_acme"`)
 }

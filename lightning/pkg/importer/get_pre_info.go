@@ -99,6 +99,8 @@ type TargetInfoGetter interface {
 	CheckVersionRequirements(ctx context.Context) error
 	// IsTableEmpty checks whether the specified table on the target DB contains data or not.
 	IsTableEmpty(ctx context.Context, schemaName string, tableName string) (*bool, error)
+	// IsPartitionEmpty checks whether the specified partition of the table contains data or not.
+	IsPartitionEmpty(ctx context.Context, schemaName string, tableName string, partitionName string) (*bool, error)
 	// GetTargetSysVariablesForImport gets some important systam variables for importing on the target.
 	GetTargetSysVariablesForImport(ctx context.Context, opts ...ropts.GetPreInfoOption) map[string]string
 	// GetMaxReplica gets the max-replica from replication config on the target.
@@ -253,7 +255,6 @@ func (g *TargetInfoGetterImpl) IsPartitionEmpty(ctx context.Context, schemaName 
 	}
 	return &result, nil
 }
-
 
 // GetTargetSysVariablesForImport gets some important system variables for importing on the target.
 // It implements the TargetInfoGetter interface.
@@ -840,6 +841,12 @@ func (p *PreImportInfoGetterImpl) GetEmptyRegionsInfo(ctx context.Context) (*pdh
 // It implements the PreImportInfoGetter interface.
 func (p *PreImportInfoGetterImpl) IsTableEmpty(ctx context.Context, schemaName string, tableName string) (*bool, error) {
 	return p.targetInfoGetter.IsTableEmpty(ctx, schemaName, tableName)
+}
+
+// IsPartitionEmpty checks whether the specified partition of the table on the target DB contains data or not.
+// It implements the PreImportInfoGetter interface.
+func (p *PreImportInfoGetterImpl) IsPartitionEmpty(ctx context.Context, schemaName string, tableName string, partitionName string) (*bool, error) {
+	return p.targetInfoGetter.IsPartitionEmpty(ctx, schemaName, tableName, partitionName)
 }
 
 // FetchRemoteDBModels fetches the database structures from the remote target.

@@ -890,6 +890,10 @@ type MydumperRuntime struct {
 	DefaultFileRules bool             `toml:"default-file-rules" json:"default-file-rules"`
 	IgnoreColumns    AllIgnoreColumns   `toml:"ignore-data-columns" json:"ignore-data-columns"`
 	ColumnConstants  AllColumnConstants `toml:"column-constants" json:"column-constants"`
+	// TargetPartition specifies the name of the partition to ingest data into.
+	// When set, Lightning scopes the empty pre-check, checksum, and ANALYZE to the named partition only.
+	// Leave empty (default) for standard full-table behavior.
+	TargetPartition  string             `toml:"target-partition" json:"target-partition"`
 	// DataCharacterSet is the character set of the source file. Only CSV files are supported now. The following options are supported.
 	//   - utf8mb4
 	//   - GB18030
