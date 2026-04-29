@@ -124,7 +124,7 @@ type CheckIndexRange struct {
 type ChecksumTable struct {
 	baseSchemaProducer
 
-	Tables         []*resolve.TableNameW
+	Tables []*resolve.TableNameW
 	// PartitionNames restricts the checksum to the named partitions only.
 	// When empty, the full table is checksummed.
 	PartitionNames []ast.CIStr
