@@ -11278,7 +11278,7 @@ AdminStmt:
 			Tp:     ast.AdminChecksumTable,
 			Tables: $4.([]*ast.TableName),
 		}
-		if names, ok := $5.([]ast.CIStr); ok && len(names) > 0 {
+		if names, ok := $5.([]model.CIStr); ok && len(names) > 0 {
 			stmt.PartitionNames = names
 		}
 		$$ = stmt
