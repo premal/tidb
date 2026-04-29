@@ -173,6 +173,8 @@ func (e *tidbChecksumExecutor) Checksum(ctx context.Context, tableInfo *checkpoi
 	return &cs, nil
 }
 
+func (*tidbChecksumExecutor) Close() {}
+
 type gcLifeTimeManager struct {
 	runningJobsLock sync.Mutex
 	runningJobs     int
@@ -394,6 +396,11 @@ func (e *TiKVChecksumManager) Checksum(ctx context.Context, tableInfo *checkpoin
 	return e.checksumDB(ctx, tableInfo, ts)
 }
 
+// Close stops the background GC TTL manager.
+func (e *TiKVChecksumManager) Close() {
+	e.manager.close()
+}
+
 type tableChecksumTS struct {
 	table    string
 	gcSafeTS uint64
@@ -533,3 +540,6 @@ func (m *gcTTLManager) start(ctx context.Context) {
 		}
 	}()
 }
+
+// close is a no-op in v8.5.6 where gcTTLManager lifecycle is context-driven.
+func (m *gcTTLManager) close() {}
