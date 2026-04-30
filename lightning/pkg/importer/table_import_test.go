@@ -803,7 +803,7 @@ func (s *tableRestoreSuite) TestCompareChecksumSuccess() {
 	mock.ExpectClose()
 
 	ctx := MockDoChecksumCtx(db)
-	remoteChecksum, err := DoChecksum(ctx, s.tr.tableInfo)
+	remoteChecksum, err := DoChecksum(ctx, s.tr.tableInfo, "")
 	require.NoError(s.T(), err)
 	err = s.tr.compareChecksum(remoteChecksum, verification.MakeKVChecksum(1234567, 12345, 1234567890))
 	require.NoError(s.T(), err)
@@ -833,7 +833,7 @@ func (s *tableRestoreSuite) TestCompareChecksumFailure() {
 	mock.ExpectClose()
 	mock.ExpectClose()
 	ctx := MockDoChecksumCtx(db)
-	remoteChecksum, err := DoChecksum(ctx, s.tr.tableInfo)
+	remoteChecksum, err := DoChecksum(ctx, s.tr.tableInfo, "")
 	require.NoError(s.T(), err)
 	err = s.tr.compareChecksum(remoteChecksum, verification.MakeKVChecksum(9876543, 54321, 1357924680))
 	require.Regexp(s.T(), "checksum mismatched.*", err.Error())
@@ -853,7 +853,7 @@ func (s *tableRestoreSuite) TestAnalyzeTable() {
 
 	ctx := context.Background()
 	require.NoError(s.T(), err)
-	err = s.tr.analyzeTable(ctx, db)
+	err = s.tr.analyzeTable(ctx, db, "")
 	require.NoError(s.T(), err)
 }
 
