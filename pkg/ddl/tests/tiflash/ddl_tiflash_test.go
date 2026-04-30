@@ -1096,7 +1096,7 @@ func TestAddPartitionSkipTiFlashReplicaWait(t *testing.T) {
 	tk.MustExec("ALTER TABLE ddltiflash_skip ADD PARTITION (PARTITION p2 VALUES LESS THAN (30))")
 
 	// Verify the new partition is now public (DDL succeeded).
-	tb, err := s.dom.InfoSchema().TableByName(context.Background(), model.NewCIStr("test"), model.NewCIStr("ddltiflash_skip"))
+	tb, err := s.dom.InfoSchema().TableByName(context.Background(), pmodel.NewCIStr("test"), pmodel.NewCIStr("ddltiflash_skip"))
 	require.NoError(t, err)
 	pi := tb.Meta().GetPartitionInfo()
 	require.NotNil(t, pi)
@@ -1122,7 +1122,7 @@ func TestAddPartitionSkipTiFlashReplicaWait(t *testing.T) {
 	tk.MustExec("ALTER TABLE ddltiflash_skip ADD PARTITION (PARTITION p3 VALUES LESS THAN (40))")
 
 	time.Sleep(ddl.PollTiFlashInterval * RoundToBeAvailablePartitionTable)
-	tb, err = s.dom.InfoSchema().TableByName(context.Background(), model.NewCIStr("test"), model.NewCIStr("ddltiflash_skip"))
+	tb, err = s.dom.InfoSchema().TableByName(context.Background(), pmodel.NewCIStr("test"), pmodel.NewCIStr("ddltiflash_skip"))
 	require.NoError(t, err)
 	pi = tb.Meta().GetPartitionInfo()
 	require.NotNil(t, pi)

@@ -1803,7 +1803,7 @@ func TestTiDBHashJoinVersion(t *testing.T) {
 }
 
 func TestTiDBSkipTiFlashReplicaWait(t *testing.T) {
-	sv := GetSysVar(vardef.TiDBSkipTiFlashReplicaWait)
+	sv := GetSysVar(TiDBSkipTiFlashReplicaWait)
 	require.NotNil(t, sv)
 	require.Equal(t, Off, sv.Value)
 
