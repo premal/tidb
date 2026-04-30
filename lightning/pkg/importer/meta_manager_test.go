@@ -449,6 +449,8 @@ func (t *testChecksumMgr) Checksum(ctx context.Context, tableInfo *checkpoints.T
 	return &t.checksum, nil
 }
 
+func (*testChecksumMgr) Close() {}
+
 func TestSingleTaskMetaMgr(t *testing.T) {
 	metaBuilder := singleMgrBuilder{
 		taskID: time.Now().UnixNano(),
