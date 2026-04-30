@@ -1010,7 +1010,7 @@ func (ci *schemaCheckItem) SchemaIsValid(ctx context.Context, tableInfo *mydump.
 		return nil, errors.Trace(err)
 	}
 	if len(colConstants) > 0 {
-		se, err := kv.NewSession(&encode.SessionOptions{SQLMode: mysql.ModeStrictTransTables}, log.Wrap(logutil.Logger(ctx)))
+		se, err := kv.NewSession(&encode.SessionOptions{SQLMode: mysql.ModeStrictTransTables}, log.FromContext(ctx))
 		if err != nil {
 			return nil, errors.Trace(err)
 		}
